@@ -6,14 +6,14 @@ WORKDIR /app/frontend
 # Copy package files
 COPY frontend/package*.json ./
 
-# Install dependencies
-RUN npm ci --only=production
+# Install dependencies (including dev dependencies for build)
+RUN npm ci
 
 # Copy source code
 COPY frontend/ .
 
-# Build application
-RUN npm run build
+# Fix permissions and build application
+RUN chmod +x node_modules/.bin/* && npm run build
 
 # Stage 2: Build Backend
 FROM gradle:8.5-jdk21 AS backend-build
