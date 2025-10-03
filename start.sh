@@ -3,7 +3,7 @@ set -e
 
 # Get the PORT from environment (Render sets this)
 # Backend will run on a different port, nginx will run on the Render-assigned port
-BACKEND_PORT=8080
+BACKEND_PORT=18080
 NGINX_PORT=${PORT}
 
 # If PORT is not set, use a different port for nginx to avoid conflict
