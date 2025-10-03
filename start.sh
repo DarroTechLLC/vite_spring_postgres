@@ -1,31 +1,44 @@
 #!/bin/bash
 set -e
 
-# Set PORT environment variable for Render
-export PORT=80
+# Get the PORT from environment (Render sets this)
+# Backend will run on a different port, nginx will run on the Render-assigned port
+BACKEND_PORT=8080
+NGINX_PORT=${PORT:-80}
 
-# Start backend in background
-echo "Starting backend..."
-java -jar backend.jar &
+echo "Starting application..."
+echo "Backend will run on port: $BACKEND_PORT"
+echo "Nginx will run on port: $NGINX_PORT"
+
+# Start backend in background on internal port
+echo "Starting backend on port $BACKEND_PORT..."
+java -Dserver.port=$BACKEND_PORT -jar backend.jar &
 BACKEND_PID=$!
 
 # Wait for backend to be ready
 echo "Waiting for backend to start..."
 for i in {1..30}; do
-    if curl -f http://localhost:8080/actuator/health > /dev/null 2>&1; then
-        echo "Backend is ready!"
+    if curl -f http://localhost:$BACKEND_PORT/actuator/health > /dev/null 2>&1; then
+        echo "Backend is ready on port $BACKEND_PORT!"
         break
     fi
     echo "Attempt $i: Backend not ready yet, waiting..."
     sleep 2
 done
 
+# Update nginx configuration to use the correct ports
+echo "Updating nginx configuration..."
+# Update nginx to listen on the Render-assigned port
+sed -i "s/listen 80;/listen $NGINX_PORT;/" /etc/nginx/nginx.conf
+# Ensure backend proxy points to the correct internal port
+sed -i "s/localhost:8080/localhost:$BACKEND_PORT/g" /etc/nginx/nginx.conf
+
 # Test nginx configuration
 echo "Testing nginx configuration..."
 nginx -t
 
 # Start nginx in foreground (this will be the main process)
-echo "Starting nginx in foreground..."
+echo "Starting nginx in foreground on port $NGINX_PORT..."
 echo "PORT is set to: $PORT"
 
 # Start nginx and show what's listening

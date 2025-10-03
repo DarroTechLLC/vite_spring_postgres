@@ -64,12 +64,12 @@ RUN mkdir -p /var/cache/nginx /var/log/nginx /var/lib/nginx /tmp && \
 # Switch to non-root user
 USER appuser
 
-# Expose port 80
-EXPOSE 80
+# Expose port (Render will set this dynamically)
+EXPOSE $PORT
 
 # Health check
 HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
-  CMD curl -f http://localhost/health || exit 1
+  CMD curl -f http://localhost:$PORT/health || exit 1
 
 # Start application
 CMD ["/app/start.sh"]
