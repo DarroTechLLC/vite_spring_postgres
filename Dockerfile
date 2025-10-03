@@ -58,7 +58,7 @@ COPY start.sh /app/start.sh
 RUN chmod +x /app/start.sh
 
 # Change ownership
-RUN chown -R appuser:appuser /app /var/www/html /var/log/nginx /var/lib/nginx /run/nginx.pid
+RUN chown -R appuser:appuser /app /var/www/html /var/log/nginx /var/lib/nginx
 
 # Switch to non-root user
 USER appuser
