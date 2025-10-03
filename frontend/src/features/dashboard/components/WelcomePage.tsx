@@ -9,9 +9,16 @@ interface DbHealth {
   message: string;
 }
 
+interface Stats {
+  userCount: number;
+  status: string;
+  error?: string;
+}
+
 export const WelcomePage = () => {
   const { user } = useAuth();
   const [dbHealth, setDbHealth] = useState<DbHealth | null>(null);
+  const [stats, setStats] = useState<Stats | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -26,7 +33,17 @@ export const WelcomePage = () => {
       }
     };
 
+    const fetchStats = async () => {
+      try {
+        const response = await api.get<Stats>('/api/v1/health/stats');
+        setStats(response.data);
+      } catch (error) {
+        setStats({ userCount: 0, status: 'error', error: 'Failed to fetch stats' });
+      }
+    };
+
     checkDbHealth();
+    fetchStats();
   }, []);
 
   return (
@@ -71,29 +88,29 @@ export const WelcomePage = () => {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <Card>
           <CardHeader>
-            <CardTitle>Quick Stats</CardTitle>
+            <CardTitle>Total Users</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-2xl font-bold">0</p>
-            <p className="text-sm text-gray-600">Total Items</p>
+            <p className="text-2xl font-bold">{stats?.userCount || 0}</p>
+            <p className="text-sm text-gray-600">Registered Users</p>
           </CardContent>
         </Card>
         <Card>
           <CardHeader>
-            <CardTitle>Activity</CardTitle>
+            <CardTitle>Database Status</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-2xl font-bold">0</p>
-            <p className="text-sm text-gray-600">Recent Actions</p>
+            <p className="text-2xl font-bold text-green-600">Connected</p>
+            <p className="text-sm text-gray-600">PostgreSQL</p>
           </CardContent>
         </Card>
         <Card>
           <CardHeader>
-            <CardTitle>Status</CardTitle>
+            <CardTitle>System Status</CardTitle>
           </CardHeader>
           <CardContent>
             <p className="text-2xl font-bold text-green-600">Active</p>
-            <p className="text-sm text-gray-600">System Status</p>
+            <p className="text-sm text-gray-600">All Systems Operational</p>
           </CardContent>
         </Card>
       </div>

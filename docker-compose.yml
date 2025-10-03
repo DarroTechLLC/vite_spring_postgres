@@ -31,14 +31,10 @@ services:
         condition: service_healthy
         restart: true
     environment:
-      DB_HOST: postgres
-      DB_PORT: 5432
-      DB_NAME: appdb
-      DB_USER: postgres
-      DB_PASSWORD: postgres
-      JWT_SECRET: your-secret-key-change-this-in-production-at-least-256-bits-long-make-it-really-secure
-      PORT: 8080
+      # Only set Spring profile - all other config comes from .env via application.properties
       SPRING_PROFILES_ACTIVE: dev
+    volumes:
+      - ./.env:/app/.env:ro
     ports:
       - "8080:8080"
     healthcheck:

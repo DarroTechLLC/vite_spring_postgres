@@ -24,6 +24,9 @@ RUN groupadd -r appuser && useradd -r -g appuser appuser
 # Copy JAR from build stage
 COPY --from=build /app/build/libs/*.jar app.jar
 
+# Copy .env file if it exists
+COPY .env* ./
+
 # Change ownership
 RUN chown -R appuser:appuser /app
 USER appuser
