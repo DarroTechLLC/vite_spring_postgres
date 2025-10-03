@@ -13,9 +13,7 @@ RUN npm ci
 COPY frontend/ .
 
 # Fix permissions and build application
-RUN find node_modules -name "*.bin" -type d -exec chmod -R +x {} \; && \
-    find node_modules -name "esbuild" -type f -exec chmod +x {} \; && \
-    find node_modules -name "vite" -type f -exec chmod +x {} \; && \
+RUN chmod -R 755 node_modules && \
     npm run build
 
 # Stage 2: Build Backend
