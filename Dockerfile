@@ -57,8 +57,9 @@ COPY start.sh /app/start.sh
 # Make startup script executable
 RUN chmod +x /app/start.sh
 
-# Change ownership
-RUN chown -R appuser:appuser /app /var/www/html /var/log/nginx /var/lib/nginx
+# Create nginx directories and fix ownership
+RUN mkdir -p /var/cache/nginx /var/log/nginx /var/lib/nginx /tmp && \
+    chown -R appuser:appuser /app /var/www/html /var/log/nginx /var/lib/nginx /var/cache/nginx /tmp
 
 # Switch to non-root user
 USER appuser
