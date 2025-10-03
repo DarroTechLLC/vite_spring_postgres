@@ -4,7 +4,12 @@ set -e
 # Get the PORT from environment (Render sets this)
 # Backend will run on a different port, nginx will run on the Render-assigned port
 BACKEND_PORT=8080
-NGINX_PORT=${PORT:-80}
+NGINX_PORT=${PORT}
+
+# If PORT is not set, use a different port for nginx to avoid conflict
+if [ -z "$NGINX_PORT" ]; then
+    NGINX_PORT=3000
+fi
 
 echo "Starting application..."
 echo "Backend will run on port: $BACKEND_PORT"
