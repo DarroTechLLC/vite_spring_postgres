@@ -27,4 +27,17 @@ nginx -t
 # Start nginx in foreground (this will be the main process)
 echo "Starting nginx in foreground..."
 echo "PORT is set to: $PORT"
-exec nginx -g "daemon off;"
+
+# Start nginx and show what's listening
+nginx -g "daemon off;" &
+NGINX_PID=$!
+
+# Wait a moment for nginx to start
+sleep 2
+
+# Show what ports are being listened on
+echo "Checking listening ports..."
+netstat -tlnp 2>/dev/null || ss -tlnp 2>/dev/null || echo "Cannot check ports"
+
+# Wait for nginx process
+wait $NGINX_PID
