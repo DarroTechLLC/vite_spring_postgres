@@ -72,3 +72,4 @@ HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
 
 # Start application
 CMD ["/app/start.sh"]
+# Fixed nginx.pid chown issue
