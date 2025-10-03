@@ -59,7 +59,9 @@ RUN chmod +x /app/start.sh
 
 # Create nginx directories and fix ownership
 RUN mkdir -p /var/cache/nginx /var/log/nginx /var/lib/nginx /tmp && \
-    chown -R appuser:appuser /app /var/www/html /var/log/nginx /var/lib/nginx /var/cache/nginx /tmp
+    chown -R appuser:appuser /app /var/www/html /var/log/nginx /var/lib/nginx /var/cache/nginx /tmp && \
+    chmod 755 /etc/nginx && \
+    chmod 644 /etc/nginx/nginx.conf
 
 # Switch to non-root user
 USER appuser
