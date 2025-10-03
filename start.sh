@@ -2,6 +2,7 @@
 set -e
 
 # Start backend in background
+echo "Starting backend..."
 java -jar backend.jar &
 BACKEND_PID=$!
 
@@ -16,21 +17,10 @@ for i in {1..30}; do
     sleep 2
 done
 
-# Start nginx in foreground
-echo "Starting nginx..."
-nginx -g "daemon off;" &
-NGINX_PID=$!
+# Test nginx configuration
+echo "Testing nginx configuration..."
+nginx -t
 
-# Function to handle shutdown
-cleanup() {
-    echo "Shutting down..."
-    kill $BACKEND_PID $NGINX_PID 2>/dev/null || true
-    wait
-    exit 0
-}
-
-# Set up signal handlers
-trap cleanup SIGTERM SIGINT
-
-# Wait for processes
-wait
+# Start nginx in foreground (this will be the main process)
+echo "Starting nginx in foreground..."
+exec nginx -g "daemon off;"
