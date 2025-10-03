@@ -1,6 +1,9 @@
 #!/bin/bash
 set -e
 
+# Set PORT environment variable for Render
+export PORT=80
+
 # Start backend in background
 echo "Starting backend..."
 java -jar backend.jar &
@@ -23,4 +26,5 @@ nginx -t
 
 # Start nginx in foreground (this will be the main process)
 echo "Starting nginx in foreground..."
+echo "PORT is set to: $PORT"
 exec nginx -g "daemon off;"
