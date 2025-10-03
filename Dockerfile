@@ -49,7 +49,7 @@ COPY --from=backend-build /app/backend/build/libs/*.jar backend.jar
 COPY --from=frontend-build /app/frontend/dist /var/www/html
 
 # Copy nginx configuration
-COPY nginx.conf /etc/nginx/sites-available/default
+COPY nginx.conf /etc/nginx/nginx.conf
 
 # Copy startup script
 COPY start.sh /app/start.sh
