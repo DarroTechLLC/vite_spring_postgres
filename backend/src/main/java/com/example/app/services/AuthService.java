@@ -1,7 +1,11 @@
-package com.example.app.auth;
+package com.example.app.services;
 
-import com.example.app.user.User;
-import com.example.app.user.UserRepository;
+import com.example.app.models.User;
+import com.example.app.repository.UserRepository;
+import com.example.app.dto.AuthResponse;
+import com.example.app.dto.LoginRequest;
+import com.example.app.dto.RegisterRequest;
+import com.example.app.services.JwtService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

@@ -1,6 +1,10 @@
-package com.example.app.auth;
+package com.example.app.controllers;
 
-import com.example.app.user.User;
+import com.example.app.models.User;
+import com.example.app.dto.AuthResponse;
+import com.example.app.dto.LoginRequest;
+import com.example.app.dto.RegisterRequest;
+import com.example.app.services.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;

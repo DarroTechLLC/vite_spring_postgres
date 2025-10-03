@@ -1,4 +1,6 @@
-package com.example.app.health;
+package com.example.app.controllers;
+
+import com.example.app.dto.HealthResponse;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
